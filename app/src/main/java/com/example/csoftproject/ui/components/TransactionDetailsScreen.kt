@@ -1,7 +1,6 @@
 package com.example.csoftproject.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,10 +19,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.csoftproject.R
 import com.example.csoftproject.domain.models.Expense
+import com.example.csoftproject.ui.theme.ElevationLarge
+import com.example.csoftproject.ui.theme.ExtraLargePadding
+import com.example.csoftproject.ui.theme.IconSizeSmall
+import com.example.csoftproject.ui.theme.LargePadding
+import com.example.csoftproject.ui.theme.MediumPadding
+import com.example.csoftproject.ui.theme.SmallPadding
+import com.example.csoftproject.ui.theme.SpaceMedium
 import com.example.csoftproject.viewModel.DashboardViewModel
 
 @Composable
@@ -38,7 +43,7 @@ fun TransactionDetailsScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(ExtraLargePadding)
     ) {
 
         Row(
@@ -47,12 +52,11 @@ fun TransactionDetailsScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             BackButton(
-                navController = navController,
-                modifier = Modifier.padding(bottom = 24.dp)
+                navController = navController
             )
 
             IconButton(
-                modifier = Modifier.padding(4.dp),
+                modifier = Modifier.padding(MediumPadding),
                 onClick = {
                     navController.navigate("editExpense/${expense?.id}")
                 }
@@ -62,8 +66,8 @@ fun TransactionDetailsScreen(
                     contentDescription = "Edit",
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
-                        .size(24.dp)
-                        .padding(2.dp)
+                        .size(IconSizeSmall)
+                        .padding(SmallPadding)
                         .fillMaxSize()
                 )
             }
@@ -71,8 +75,7 @@ fun TransactionDetailsScreen(
 
         TransactionDetails(
             expense = expense,
-            dashboardViewModel = dashboardViewModel,
-            navController = navController
+            dashboardViewModel = dashboardViewModel
         )
     }
 }
@@ -80,8 +83,7 @@ fun TransactionDetailsScreen(
 @Composable
 fun TransactionDetails(
     expense: Expense?,
-    dashboardViewModel: DashboardViewModel,
-    navController: NavController
+    dashboardViewModel: DashboardViewModel
 ) {
 
     Column(
@@ -109,15 +111,15 @@ fun TransactionDetailsCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        elevation = CardDefaults.cardElevation(6.dp),
+            .padding(LargePadding),
+        elevation = CardDefaults.cardElevation(ElevationLarge),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
     ) {
         Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.padding(ExtraLargePadding),
+            verticalArrangement = Arrangement.spacedBy(SpaceMedium)
         ) {
 
             Row(

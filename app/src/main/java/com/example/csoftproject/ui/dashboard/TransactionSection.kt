@@ -19,15 +19,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.csoftproject.R
 import com.example.csoftproject.domain.models.Expense
 import com.example.csoftproject.domain.utils.getMostRecentTransactions
+import com.example.csoftproject.ui.theme.ElevationLarge
+import com.example.csoftproject.ui.theme.ExtraLargePadding
+import com.example.csoftproject.ui.theme.IconSizeSmall
+import com.example.csoftproject.ui.theme.LargePadding
+import com.example.csoftproject.ui.theme.SpaceMedium
+import com.example.csoftproject.ui.theme.TextSizeTitle
 import com.example.csoftproject.viewModel.DashboardViewModel
 
 @Composable
@@ -41,15 +47,15 @@ fun TransactionSection(
 
 @Composable
 fun RecentTransactions(modifier: Modifier = Modifier, navController: NavController, dashboardViewModel: DashboardViewModel) {
-    Column() {
+    Column {
         Text(
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .padding(top = 32.dp)
+                .padding(top = ExtraLargePadding)
                 .fillMaxWidth(),
             text = "Recent Transactions",
             style = MaterialTheme.typography.titleMedium,
-            fontSize = 18.sp
+            fontSize = TextSizeTitle
         )
         TransactionList(modifier, navController, dashboardViewModel)
     }
@@ -59,12 +65,14 @@ fun RecentTransactions(modifier: Modifier = Modifier, navController: NavControll
 fun TransactionList(modifier: Modifier = Modifier, navController: NavController, dashboardViewModel: DashboardViewModel) {
 
     val expenses = dashboardViewModel.expenses.collectAsState().value
+    val configuration = LocalConfiguration.current
+    val listHeight = (configuration.screenHeightDp * 0.35f).dp
 
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()
-            .height(300.dp)
-            .padding(16.dp)
+            .height(listHeight)
+            .padding(ExtraLargePadding)
     ) {
         items(
             items = getMostRecentTransactions(expenses),
@@ -83,8 +91,8 @@ fun TransactionCard(expense: Expense, modifier: Modifier) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        elevation = CardDefaults.cardElevation(4.dp),
+            .padding(vertical = LargePadding),
+        elevation = CardDefaults.cardElevation(ElevationLarge),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryFixedDim
         )
@@ -92,9 +100,9 @@ fun TransactionCard(expense: Expense, modifier: Modifier) {
 
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(ExtraLargePadding)
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(SpaceMedium),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(
@@ -120,7 +128,7 @@ fun TransactionCard(expense: Expense, modifier: Modifier) {
             Icon(
                 painter = painterResource(R.drawable.search),
                 contentDescription = "magnifying glass",
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(IconSizeSmall)
             )
         }
     }

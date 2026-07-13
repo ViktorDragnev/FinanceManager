@@ -10,14 +10,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.csoftproject.R
+import com.example.csoftproject.ui.theme.IconButtonSize
 
 @Composable
-fun BackButton(navController : NavController, modifier: Modifier) {
+fun BackButton(navController : NavController) {
+
     IconButton(
         modifier = Modifier
-            .size(24.dp),
+            .size(IconButtonSize),
         onClick = { navController.popBackStack() },
-
         ) {
         Icon(
             painter = painterResource(R.drawable.back),

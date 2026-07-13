@@ -10,7 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.room.util.TableInfo
+import com.example.csoftproject.R
 
 @Composable
 fun ErrorScreen(onRetry: () -> Unit) {
@@ -22,7 +24,7 @@ fun ErrorScreen(onRetry: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Something went wrong!",
+            text = stringResource(R.string.error_screen_status),
             color = MaterialTheme.colorScheme.error
         )
         

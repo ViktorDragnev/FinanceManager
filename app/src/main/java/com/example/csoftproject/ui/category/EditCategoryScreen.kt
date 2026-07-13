@@ -40,6 +40,12 @@ import com.example.csoftproject.ui.components.BackButton
 import com.example.csoftproject.ui.components.CATEGORY_ICONS
 import com.example.csoftproject.ui.components.ColorPicker
 import com.example.csoftproject.ui.components.ErrorDialog
+import com.example.csoftproject.ui.theme.BoxSize
+import com.example.csoftproject.ui.theme.ExtraLargePadding
+import com.example.csoftproject.ui.theme.LargePadding
+import com.example.csoftproject.ui.theme.LazyGridSize
+import com.example.csoftproject.ui.theme.MediumPadding
+import com.example.csoftproject.ui.theme.SpaceMedium
 import com.example.csoftproject.viewModel.EditCategoryViewModel
 
 @Composable
@@ -76,22 +82,19 @@ fun EditCategoryScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(MediumPadding),
             contentAlignment = Alignment.CenterStart
         ) {
 
             BackButton(
-                navController = navController,
-                modifier = Modifier
-                    .padding(24.dp)
-                    .align(Alignment.CenterStart)
+                navController = navController
             )
 
             Text(
                 text = "Edit Category",
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(ExtraLargePadding)
                     .align(Alignment.Center)
             )
         }
@@ -99,9 +102,9 @@ fun EditCategoryScreen(
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
-                .padding(16.dp),
+                .padding(ExtraLargePadding),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(SpaceMedium)
         ) {
             item {
                 OutlinedTextField(
@@ -130,7 +133,7 @@ fun EditCategoryScreen(
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
                     modifier = Modifier
-                        .height(200.dp)
+                        .height(LazyGridSize)
                         .fillMaxWidth()
                 ) {
                     items(CATEGORY_ICONS) { iconRes ->
@@ -157,7 +160,7 @@ fun EditCategoryScreen(
             }
 
             item {
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(SpaceMedium))
             }
 
             item {
@@ -170,7 +173,7 @@ fun EditCategoryScreen(
                         onClick = {
                             openAlertDialog.value = true
                         },
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier.padding(ExtraLargePadding),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.error
                         )
@@ -194,7 +197,7 @@ fun EditCategoryScreen(
                             )
                         },
                         enabled = validationResult.isValid,
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(ExtraLargePadding)
                     ) {
                         Text("Save")
                     }
@@ -240,8 +243,8 @@ fun IconOption(
 ) {
     Box(
         modifier = Modifier
-            .padding(8.dp)
-            .size(64.dp)
+            .padding(LargePadding)
+            .size(BoxSize)
             .background(
                 if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
                 else MaterialTheme.colorScheme.surface,

@@ -31,6 +31,9 @@ import com.example.csoftproject.ui.components.BackButton
 import com.example.csoftproject.ui.components.CATEGORY_ICONS
 import com.example.csoftproject.ui.components.ColorPicker
 import com.example.csoftproject.ui.components.ErrorDialog
+import com.example.csoftproject.ui.theme.ExtraLargePadding
+import com.example.csoftproject.ui.theme.LargePadding
+import com.example.csoftproject.ui.theme.LazyGridSize
 import com.example.csoftproject.viewModel.AddCategoryViewModel
 
 @Composable
@@ -61,22 +64,19 @@ fun AddCategoryScreen(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(LargePadding),
             contentAlignment = Alignment.CenterStart
         ) {
 
             BackButton(
-                navController = navController,
-                modifier = Modifier
-                    .padding(24.dp)
-                    .align(Alignment.CenterStart)
+                navController = navController
             )
 
             Text(
                 text = "Add Category",
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(ExtraLargePadding)
                     .align(Alignment.Center)
             )
         }
@@ -84,9 +84,9 @@ fun AddCategoryScreen(
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
-                .padding(16.dp),
+                .padding(ExtraLargePadding),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(ExtraLargePadding)
         ) {
             item {
                 OutlinedTextField(
@@ -115,7 +115,7 @@ fun AddCategoryScreen(
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(3),
                     modifier = Modifier
-                        .height(200.dp)
+                        .height(LazyGridSize)
                         .fillMaxWidth()
                 ) {
                     items(CATEGORY_ICONS) { iconRes ->
@@ -147,7 +147,7 @@ fun AddCategoryScreen(
                         addCategoryViewModel.addCategory(addCategoryDto, context, navController::popBackStack)
                     },
                     enabled = validationResult.isValid,
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(ExtraLargePadding)
                 ) {
                     Text("Save")
                 }

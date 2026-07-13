@@ -1,6 +1,5 @@
 package com.example.csoftproject.ui.transaction
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -21,12 +20,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.csoftproject.R
 import com.example.csoftproject.ui.components.BackButton
 import com.example.csoftproject.ui.components.ErrorDialog
+import com.example.csoftproject.ui.theme.ExtraLargePadding
+import com.example.csoftproject.ui.theme.LargePadding
 import com.example.csoftproject.viewModel.EditExpenseViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.Instant
 import java.time.ZoneId
 
@@ -72,30 +74,27 @@ fun EditExpenseScreen(
     }
 
     LazyColumn(
-        modifier = Modifier.padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier = Modifier.padding(ExtraLargePadding),
+        verticalArrangement = Arrangement.spacedBy(ExtraLargePadding)
     ) {
 
         item {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
+                    .padding(LargePadding),
                 contentAlignment = Alignment.CenterStart
             ) {
 
                 BackButton(
-                    navController = navController,
-                    modifier = Modifier
-                        .padding(24.dp)
-                        .align(Alignment.CenterStart)
+                    navController = navController
                 )
 
                 Text(
                     text = "Edit Expense",
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(ExtraLargePadding)
                         .align(Alignment.Center)
                 )
             }
@@ -106,7 +105,7 @@ fun EditExpenseScreen(
                 value = state.value,
                 onValueChange = { editExpenseViewModel.onValueChanged(it) },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text("Amount (€)") },
+                label = { Text(stringResource(R.string.amount)) },
                 isError = state.valueError != null,
                 supportingText = {
                     state.valueError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
@@ -138,7 +137,7 @@ fun EditExpenseScreen(
                 value = state.description,
                 onValueChange = { editExpenseViewModel.onDescriptionChanged(it) },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text("Description") },
+                label = { Text(stringResource(R.string.description)) },
                 isError = state.descriptionError != null,
                 supportingText = {
                     state.descriptionError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
@@ -166,13 +165,13 @@ fun EditExpenseScreen(
                 Button(
                     onClick = { openAlertDialog.value = true},
                     modifier = Modifier
-                        .padding(16.dp),
+                        .padding(ExtraLargePadding),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error
                     )
                 ) {
                     Text(
-                        text = "Delete"
+                        text = stringResource(R.string.delete)
                     )
                 }
 
@@ -182,9 +181,9 @@ fun EditExpenseScreen(
                             onSuccess = { navController.popBackStack() }
                         )
                     },
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(ExtraLargePadding),
                     ) {
-                    Text("Save")
+                    Text(stringResource(R.string.save))
                 }
             }
         }

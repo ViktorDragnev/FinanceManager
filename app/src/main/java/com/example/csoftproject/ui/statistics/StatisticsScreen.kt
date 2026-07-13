@@ -22,10 +22,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.csoftproject.R
 import com.example.csoftproject.domain.models.Category
 import com.example.csoftproject.domain.models.Expense
 import com.example.csoftproject.domain.utils.averageDailySpendingForPeriod
@@ -34,10 +35,13 @@ import com.example.csoftproject.domain.utils.getSingleHighestSpending
 import com.example.csoftproject.domain.utils.getTotalForExpenseList
 import com.example.csoftproject.domain.utils.getTotalForTheMonth
 import com.example.csoftproject.ui.components.ErrorScreen
+import com.example.csoftproject.ui.components.LoadingBar
 import com.example.csoftproject.ui.components.TimeFrameFilterDropDown
 import com.example.csoftproject.ui.dashboard.EmptyListView
-import com.example.csoftproject.ui.dashboard.LoadingBar
 import com.example.csoftproject.ui.state.ExpenseUiState
+import com.example.csoftproject.ui.theme.ExtraLargePadding
+import com.example.csoftproject.ui.theme.LargePadding
+import com.example.csoftproject.ui.theme.TextSizeTitle
 import com.example.csoftproject.viewModel.StatisticsViewModel
 import com.example.csoftproject.viewModel.vm_util_interfaces.FiltrationByTimeFrame
 import java.time.LocalDate
@@ -60,7 +64,7 @@ fun StatisticsScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(ExtraLargePadding)
     ) {
         Row(
             modifier = Modifier
@@ -70,7 +74,7 @@ fun StatisticsScreen(
             Text(
                 text = "Statistics Overview",
                 style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = ExtraLargePadding)
             )
         }
 
@@ -109,7 +113,7 @@ fun StatisticsSection(
     filtrationByTimeFrame: FiltrationByTimeFrame
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(20.dp),
+        verticalArrangement = Arrangement.spacedBy(LargePadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -124,14 +128,14 @@ fun StatisticsSection(
         item {
             StatisticCard(
                 amount = getSingleHighestSpending(expenses),
-                title = "Single highest spending"
+                title = stringResource(R.string.single_highest_spending)
             )
         }
 
         item {
             StatisticCard(
                 amount = getTotalForTheMonth(expenses),
-                title = "Total spent this month"
+                title = stringResource(R.string.total_spent)
             )
         }
 
@@ -139,7 +143,7 @@ fun StatisticsSection(
             item {
                 StatisticCard(
                     amount = getTotalForExpenseList(filteredExpenses),
-                    title = "Total spent for period \n" +
+                    title = stringResource(R.string.total_spending_period) +
                             "$start : $end"
                 )
             }
@@ -151,7 +155,7 @@ fun StatisticsSection(
                         start,
                         end
                     ),
-                    title = "Average daily spending for period \n" +
+                    title = stringResource(R.string.average_daily_spending_dates) +
                             "$start : $end"
                 )
             }
@@ -162,13 +166,13 @@ fun StatisticsSection(
             val categories = categories
 
             Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(ExtraLargePadding),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     "Category Breakdown",
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = LargePadding)
                 )
 
                 percentages.forEach { (categoryId, percent) ->
@@ -212,11 +216,11 @@ fun StatisticCard(amount: Double, title: String) {
             )
 
             Text(
-                text = "€${String.format("%.2f", amount)}",
+                text = stringResource(R.string.statistics_card_format, String.format("%.2f", amount)),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-                modifier = Modifier.padding(top = 8.dp)
+                fontSize = TextSizeTitle,
+                modifier = Modifier.padding(top = LargePadding)
             )
         }
     }
@@ -241,7 +245,7 @@ fun CategoryCard(
         )
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(ExtraLargePadding),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

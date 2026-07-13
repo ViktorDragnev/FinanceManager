@@ -30,6 +30,8 @@ import com.example.csoftproject.domain.enums.PaymentMethod
 import com.example.csoftproject.domain.models.Category
 import com.example.csoftproject.ui.components.BackButton
 import com.example.csoftproject.ui.components.ErrorDialog
+import com.example.csoftproject.ui.theme.ExtraLargePadding
+import com.example.csoftproject.ui.theme.LargePadding
 import com.example.csoftproject.viewModel.AddExpenseViewModel
 import java.time.Instant
 import java.time.ZoneId
@@ -62,32 +64,29 @@ fun AddExpenseFormScreen(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+            .padding(ExtraLargePadding),
+        verticalArrangement = Arrangement.spacedBy(ExtraLargePadding),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(ExtraLargePadding)) {
 
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(LargePadding),
                     contentAlignment = Alignment.CenterStart
                 ) {
 
                     BackButton(
-                        navController = navController,
-                        modifier = Modifier
-                            .padding(24.dp)
-                            .align(Alignment.CenterStart)
+                        navController = navController
                     )
 
                     Text(
                         text = "Add Expense",
                         style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier
-                            .padding(16.dp)
+                            .padding(ExtraLargePadding)
                             .align(Alignment.Center)
                     )
                 }

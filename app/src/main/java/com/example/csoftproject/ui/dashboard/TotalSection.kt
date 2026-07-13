@@ -17,12 +17,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.csoftproject.domain.utils.getTotalValue
+import com.example.csoftproject.R
 import com.example.csoftproject.domain.utils.getTotalForTheMonth
+import com.example.csoftproject.domain.utils.getTotalValue
+import com.example.csoftproject.ui.theme.ElevationLarge
+import com.example.csoftproject.ui.theme.ExtraLargePadding
+import com.example.csoftproject.ui.theme.LargePadding
+import com.example.csoftproject.ui.theme.MediumCardSize
+import com.example.csoftproject.ui.theme.TextSizeTitle
 import com.example.csoftproject.viewModel.DashboardViewModel
 
 @Composable
@@ -32,17 +37,17 @@ fun TotalSection(
 ){
     Column(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(LargePadding)
             .fillMaxWidth()
     ) {
         Text(
             text = "Total Statistics",
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .padding(16.dp)
+                .padding(ExtraLargePadding)
                 .fillMaxWidth(),
             style = MaterialTheme.typography.titleMedium,
-            fontSize = 18.sp
+            fontSize = TextSizeTitle
         )
 
         TotalStatisticsComp(dashboardViewModel = dashboardViewModel)
@@ -70,19 +75,19 @@ fun RowScope.SummaryCard(value: Double, title: String) {
 
     Card(
         modifier = Modifier
-            .padding(8.dp)
-            .padding(bottom = 8.dp)
-            .size(128.dp)
+            .padding(LargePadding)
+            .padding(bottom = LargePadding)
+            .size(MediumCardSize)
             .weight(1f)
-            .height(128.dp),
-        elevation = CardDefaults.cardElevation(4.dp),
+            .height(MediumCardSize),
+        elevation = CardDefaults.cardElevation(ElevationLarge),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryFixedDim
         )
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp),
+                .padding(ExtraLargePadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -92,10 +97,10 @@ fun RowScope.SummaryCard(value: Double, title: String) {
             )
 
             Text(
-                text = "€${String.format("%.2f", value)}",
+                text = stringResource(R.string.value_format, value),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
+                fontSize = TextSizeTitle
             )
         }
     }

@@ -13,14 +13,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.csoftproject.R
+import com.example.csoftproject.ui.theme.ExtraLargePadding
+import com.example.csoftproject.ui.theme.FloatingActionButtonSize
 
 @Composable
 fun BoxScope.ButtonToNavigateToAddForms(navController: NavController, navigationRoute: String) {
     FloatingActionButton(
         onClick = { navController.navigate(navigationRoute) },
         modifier = Modifier
-            .size(70.dp)
-            .padding(16.dp)
+            .size(FloatingActionButtonSize)
+            .padding(ExtraLargePadding)
             .align(Alignment.BottomEnd),
         contentColor = MaterialTheme.colorScheme.primary,
         containerColor = MaterialTheme.colorScheme.surfaceBright

@@ -10,6 +10,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.example.csoftproject.R
 
 @Composable
 fun ErrorDialog(onRetry: () -> Unit) {
@@ -30,7 +32,7 @@ fun ErrorDialog(onRetry: () -> Unit) {
             },
             text = {
                 Text(
-                    text = "Something went wrong",
+                    text = stringResource(R.string.error_screen_status),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.error
                 )

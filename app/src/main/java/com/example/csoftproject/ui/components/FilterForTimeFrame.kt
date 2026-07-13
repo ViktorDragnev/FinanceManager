@@ -23,9 +23,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import com.example.csoftproject.R
 import com.example.csoftproject.domain.enums.FilterForTimeFrame
+import com.example.csoftproject.ui.theme.DateRangePickerHeight
+import com.example.csoftproject.ui.theme.ExtraLargePadding
+import com.example.csoftproject.ui.theme.IconSizeSmall
+import com.example.csoftproject.ui.theme.MediumPadding
 import com.example.csoftproject.viewModel.vm_util_interfaces.FiltrationByTimeFrame
 
 @Composable
@@ -39,7 +42,7 @@ fun TimeFrameFilterDropDown(
 
     Column(
         modifier = modifier
-            .padding(8.dp)
+            .padding(MediumPadding)
             .clickable { filterExpanded = true },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -47,7 +50,7 @@ fun TimeFrameFilterDropDown(
         Icon(
             painter = painterResource(R.drawable.filter_time),
             contentDescription = "Time Frame Filter",
-            modifier = Modifier.size(30.dp)
+            modifier = Modifier.size(IconSizeSmall)
         )
 
         DropdownMenu(
@@ -156,8 +159,8 @@ fun DateRangePickerModal(
             showModeToggle = false,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(500.dp)
-                .padding(16.dp)
+                .height(DateRangePickerHeight)
+                .padding(ExtraLargePadding)
         )
     }
 }

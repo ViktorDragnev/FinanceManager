@@ -23,15 +23,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.csoftproject.R
 import com.example.csoftproject.domain.models.Category
 import com.example.csoftproject.ui.components.ButtonToNavigateToAddForms
-import com.example.csoftproject.ui.components.ErrorDialog
 import com.example.csoftproject.ui.components.ErrorScreen
-import com.example.csoftproject.ui.dashboard.LoadingBar
+import com.example.csoftproject.ui.components.LoadingBar
 import com.example.csoftproject.ui.state.CategoryUiState
+import com.example.csoftproject.ui.theme.BorderMedium
+import com.example.csoftproject.ui.theme.ExtraLargePadding
+import com.example.csoftproject.ui.theme.IconSizeMedium
+import com.example.csoftproject.ui.theme.MediumCardSize
 import com.example.csoftproject.viewModel.CategoryViewModel
 
 @Composable
@@ -53,7 +58,7 @@ fun CategoryListScreen(
         Column(
             Modifier
                 .fillMaxSize()
-                .padding(top = 16.dp),
+                .padding(top = ExtraLargePadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -71,7 +76,7 @@ fun CategoryListScreen(
                             verticalArrangement = Arrangement.Center
                         ) {
                         LoadingBar()
-                            }
+                        }
                     }
 
                     is CategoryUiState.Success -> {
@@ -105,17 +110,17 @@ fun EmptyCategoryListState() {
         contentAlignment = Alignment.Center,
     ){
         Text(
-            text = "No categories found",
+            text = stringResource(R.string.empty_category_state),
             color = MaterialTheme.colorScheme.error
         )
     }
 }
 
 @Composable
-fun CategoryVerticalGrid(categories: List<Category>, navController: NavController, modifier: Modifier = Modifier) {
+fun CategoryVerticalGrid(categories: List<Category>, navController: NavController) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(ExtraLargePadding)
     ) {
         items(categories) { category ->
             CategoryCard(
@@ -134,10 +139,10 @@ fun CategoryCard(modifier: Modifier = Modifier, category: Category) {
     Card(
         modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .size(100.dp)
+            .padding(ExtraLargePadding)
+            .size(MediumCardSize)
             .border(
-                width = 2.dp,
+                width = BorderMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 shape = MaterialTheme.shapes.medium
             ),
@@ -157,7 +162,7 @@ fun CategoryCard(modifier: Modifier = Modifier, category: Category) {
             painter = painterResource(id = category.icon),
             contentDescription = "",
             Modifier
-                .size(64.dp)
+                .size(IconSizeMedium)
                 .align(Alignment.CenterHorizontally)
         )
     }

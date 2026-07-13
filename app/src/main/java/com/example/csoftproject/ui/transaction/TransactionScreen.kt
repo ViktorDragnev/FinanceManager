@@ -40,9 +40,13 @@ import com.example.csoftproject.domain.enums.SortingExpenseOptions
 import com.example.csoftproject.domain.models.Expense
 import com.example.csoftproject.ui.components.ButtonToNavigateToAddForms
 import com.example.csoftproject.ui.components.ErrorScreen
+import com.example.csoftproject.ui.components.LoadingBar
 import com.example.csoftproject.ui.components.TimeFrameFilterDropDown
-import com.example.csoftproject.ui.dashboard.LoadingBar
 import com.example.csoftproject.ui.state.ExpenseUiState
+import com.example.csoftproject.ui.theme.ElevationLarge
+import com.example.csoftproject.ui.theme.ExtraLargePadding
+import com.example.csoftproject.ui.theme.IconSizeSmall
+import com.example.csoftproject.ui.theme.LargePadding
 import com.example.csoftproject.viewModel.TransactionsViewModel
 
 @Composable
@@ -68,19 +72,18 @@ fun TransactionScreen(
         ) {
             Text(
                 "Transaction Section",
-                Modifier.padding(16.dp),
+                Modifier.padding(ExtraLargePadding),
                 style = MaterialTheme.typography.headlineSmall
             )
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    .padding(horizontal = ExtraLargePadding, vertical = LargePadding),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SortingDropDown(
-                    modifier = Modifier.width(90.dp),
                     transactionsViewModel = transactionsViewModel
                 )
 
@@ -142,7 +145,7 @@ fun RowScope.FilterDropDown(
 
     Column(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(LargePadding)
             .weight(1f)
             .clickable { filterExpanded = true },
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -151,7 +154,7 @@ fun RowScope.FilterDropDown(
         Icon(
             painter = painterResource(R.drawable.filter),
             contentDescription = "Filter",
-            modifier = Modifier.size(30.dp)
+            modifier = Modifier.size(IconSizeSmall)
         )
 
         DropdownMenu(
@@ -181,15 +184,14 @@ fun RowScope.FilterDropDown(
 
 @Composable
 fun RowScope.SortingDropDown(
-    transactionsViewModel: TransactionsViewModel,
-    modifier: Modifier
+    transactionsViewModel: TransactionsViewModel
 ) {
 
     var sortExpanded by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(LargePadding)
             .weight(1f)
             .clickable { sortExpanded = true },
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -198,7 +200,7 @@ fun RowScope.SortingDropDown(
         Icon(
             painter = painterResource(R.drawable.sort),
             contentDescription = "Filter",
-            modifier = Modifier.size(30.dp)
+            modifier = Modifier.size(IconSizeSmall)
         )
 
         DropdownMenu(
@@ -260,7 +262,7 @@ fun ColumnScope.ExpenseList(
                 Text(
                     text = date.toString(),
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(LargePadding)
                 )
             }
 
@@ -285,18 +287,18 @@ fun ExpenseRow(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 8.dp)
+            .padding(horizontal = LargePadding, vertical = LargePadding)
             .clickable { onClick(expense.id) },
-        elevation = CardDefaults.cardElevation(4.dp),
+        elevation = CardDefaults.cardElevation(ElevationLarge),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryFixedDim
         )
     ) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(ExtraLargePadding)
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(ExtraLargePadding),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(
@@ -310,7 +312,7 @@ fun ExpenseRow(
             Icon(
                 painter = painterResource(R.drawable.search),
                 contentDescription = "magnifying glass",
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(IconSizeSmall)
             )
         }
     }

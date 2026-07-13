@@ -21,11 +21,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.csoftproject.R
 import com.example.csoftproject.domain.utils.calculateCategoryPercentage
+import com.example.csoftproject.ui.theme.BorderSmall
+import com.example.csoftproject.ui.theme.ExtraLargePadding
+import com.example.csoftproject.ui.theme.IconSizeSmall
+import com.example.csoftproject.ui.theme.LargePadding
+import com.example.csoftproject.ui.theme.SpaceMedium
+import com.example.csoftproject.ui.theme.TextSizeTitle
 import com.example.csoftproject.viewModel.DashboardViewModel
 
 @Composable
@@ -39,17 +44,17 @@ fun CategorySection(
 
     Column(
         modifier = Modifier
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(ExtraLargePadding),
+        verticalArrangement = Arrangement.spacedBy(ExtraLargePadding)
     ) {
         Text(
             text = "Categories Overview",
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .padding(16.dp)
+                .padding(ExtraLargePadding)
                 .fillMaxWidth(),
             style = MaterialTheme.typography.titleMedium,
-            fontSize = 18.sp
+            fontSize = TextSizeTitle
         )
         CategoriesList(
             dashboardViewModel = dashboardViewModel,
@@ -90,9 +95,9 @@ fun CategoryCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(LargePadding)
             .border(
-                width = 1.dp,
+                width = BorderSmall,
                 color = MaterialTheme.colorScheme.tertiary,
                 shape = MaterialTheme.shapes.medium
             ),
@@ -101,15 +106,15 @@ fun CategoryCard(
         )
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(ExtraLargePadding),
+            horizontalArrangement = Arrangement.spacedBy(SpaceMedium),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 painter = painterResource(category?.icon ?: R.drawable.question_sign),
                 contentDescription = category?.name,
                 tint = category?.color ?: Color.Unspecified,
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(IconSizeSmall)
             )
 
             ProgressBar(
@@ -118,7 +123,7 @@ fun CategoryCard(
             )
 
             Text(
-                text = "${String.format("%.1f", percentage)}%",
+                text = stringResource(R.string.percentage_format, percentage),
                 style = MaterialTheme.typography.titleMedium
             )
         }
