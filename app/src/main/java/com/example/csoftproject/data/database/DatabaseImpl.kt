@@ -10,12 +10,14 @@ import com.example.csoftproject.data.database.converters.DateConverter
 import com.example.csoftproject.data.database.converters.PaymentMethodConverter
 import com.example.csoftproject.data.dao.CategoryDao
 import com.example.csoftproject.data.dao.ExpenseDao
+import com.example.csoftproject.data.dao.SavingsGoalDao
 import com.example.csoftproject.data.entity.CategoryEntity
 import com.example.csoftproject.data.entity.ExpenseEntity
+import com.example.csoftproject.data.entity.SavingsGoalEntity
 
 @Database(
-    entities = [ExpenseEntity::class, CategoryEntity::class],
-    version = 1
+    entities = [ExpenseEntity::class, CategoryEntity::class, SavingsGoalEntity::class],
+    version = 2
 )
 @TypeConverters(
     DateConverter::class,
@@ -26,6 +28,7 @@ abstract class DatabaseImpl: RoomDatabase(){
 
     abstract val expenseDao: ExpenseDao
     abstract val categoryDao: CategoryDao
+    abstract val savingsGoalDao: SavingsGoalDao
 
     companion object{
 

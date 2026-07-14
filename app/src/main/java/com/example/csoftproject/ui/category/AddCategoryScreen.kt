@@ -54,7 +54,8 @@ fun AddCategoryScreen(
     val addCategoryDto = AddCategoryDto(
         name = state.name,
         icon = state.icon,
-        color = state.color
+        color = state.color,
+        budgetLimit = state.budgetLimit.toDoubleOrNull()
     )
 
     Column(
@@ -103,6 +104,15 @@ fun AddCategoryScreen(
                             Text(it, color = MaterialTheme.colorScheme.error)
                         }
                     },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            item {
+                OutlinedTextField(
+                    value = state.budgetLimit,
+                    onValueChange = { state = state.copy(budgetLimit = it) },
+                    label = { Text("Budget Limit (Optional)") },
                     modifier = Modifier.fillMaxWidth()
                 )
             }

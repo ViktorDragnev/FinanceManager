@@ -1,6 +1,8 @@
 package com.example.csoftproject.domain.enums
 
 enum class PaymentMethod {
-    CARD,
-    CASH
+    DEBIT_CARD,
+    CASH,
+    REVOLUT,
+    BANK_TRANSFER
 }

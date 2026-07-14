@@ -126,6 +126,19 @@ fun EditCategoryScreen(
             }
 
             item {
+                var budgetLimitString by remember { mutableStateOf(state.budgetLimit?.toString() ?: "") }
+                OutlinedTextField(
+                    value = budgetLimitString,
+                    onValueChange = {
+                        budgetLimitString = it
+                        state = state.copy(budgetLimit = it.toDoubleOrNull())
+                    },
+                    label = { Text("Budget Limit (Optional)") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            item {
                 Text("Choose Icon", style = MaterialTheme.typography.titleMedium)
             }
 
@@ -189,6 +202,7 @@ fun EditCategoryScreen(
                                     name = state.name,
                                     icon = state.icon,
                                     color = state.color,
+                                    budgetLimit = state.budgetLimit
                                 ),
                                 context = context,
                                 onSuccess = {
@@ -225,6 +239,7 @@ fun EditCategoryScreen(
                         name = state.name,
                         icon = state.icon,
                         color = state.color,
+                        budgetLimit = state.budgetLimit
                     ),
                     context,
                     navController::popBackStack

@@ -5,6 +5,7 @@ fun getBottomItemList(): List<BottomNavItem> {
         BottomNavItem.Dashboard,
         BottomNavItem.Transactions,
         BottomNavItem.Catalog,
-        BottomNavItem.Statistics
+        BottomNavItem.Statistics,
+        BottomNavItem.Savings
     )
 }

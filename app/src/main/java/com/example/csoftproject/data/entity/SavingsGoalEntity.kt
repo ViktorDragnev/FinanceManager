@@ -3,12 +3,11 @@ package com.example.csoftproject.data.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "categories")
-data class CategoryEntity (
+@Entity(tableName = "savings_goals")
+data class SavingsGoalEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val icon: Int,
-    val name: String,
-    val color: String,
-    val budgetLimit: Double? = null,
+    val title: String,
+    val targetAmount: Double,
+    val currentAmount: Double,
     val updateCount: Int
 )

@@ -14,6 +14,7 @@ object CategoryMapper {
             icon = icon,
             name = name,
             color = Color(parseColor(color)),
+            budgetLimit = budgetLimit,
             updateCount = updateCount
         )
     }
@@ -24,6 +25,7 @@ object CategoryMapper {
             icon = icon,
             name = name,
             color = String.format("#%08X", color.toArgb()),
+            budgetLimit = budgetLimit,
             updateCount = updateCount
         )
     }

@@ -7,5 +7,6 @@ data class Category(
     val icon: Int,
     val name: String,
     val color: Color,
+    val budgetLimit: Double? = null,
     val updateCount: Int
 )

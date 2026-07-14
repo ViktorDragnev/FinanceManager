@@ -2,26 +2,18 @@ package com.example.csoftproject.ui.category
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -46,6 +38,7 @@ fun CategoryListScreen(
 ) {
     val uiState by categoryViewModel.uiState.collectAsState()
     val categories by categoryViewModel.categories.collectAsState()
+    val expenses by categoryViewModel.expenses.collectAsState()
     val isRefreshing by categoryViewModel.isRefreshing.collectAsState()
     val errorOccurred by categoryViewModel.errorMessage.collectAsState()
 
@@ -80,7 +73,7 @@ fun CategoryListScreen(
                     }
 
                     is CategoryUiState.Success -> {
-                        CategoryVerticalGrid(categories, navController)
+                        CategoryVerticalGrid(categories, expenses, navController)
                     }
 
                     is CategoryUiState.Error -> {
@@ -117,14 +110,16 @@ fun EmptyCategoryListState() {
 }
 
 @Composable
-fun CategoryVerticalGrid(categories: List<Category>, navController: NavController) {
+fun CategoryVerticalGrid(categories: List<Category>, expenses: List<com.example.csoftproject.domain.models.Expense>, navController: NavController) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier.padding(ExtraLargePadding)
     ) {
         items(categories) { category ->
+            val spentAmount = expenses.filter { it.category.id == category.id }.sumOf { it.transactionValue }
             CategoryCard(
                 category = category,
+                spentAmount = spentAmount,
                 modifier = Modifier.clickable {
                     navController.navigate("editCategory/${category.id}")
                 }
@@ -134,16 +129,19 @@ fun CategoryVerticalGrid(categories: List<Category>, navController: NavControlle
 }
 
 @Composable
-fun CategoryCard(modifier: Modifier = Modifier, category: Category) {
+fun CategoryCard(modifier: Modifier = Modifier, category: Category, spentAmount: Double) {
+    val budgetLimit = category.budgetLimit
+    val isOverBudget = budgetLimit != null && spentAmount > budgetLimit
+    val isNearBudget = budgetLimit != null && spentAmount > (budgetLimit * 0.8)
 
     Card(
-        modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(ExtraLargePadding)
             .size(MediumCardSize)
             .border(
                 width = BorderMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                color = if (isOverBudget) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onPrimaryContainer,
                 shape = MaterialTheme.shapes.medium
             ),
         colors = CardDefaults.cardColors(
@@ -151,19 +149,37 @@ fun CategoryCard(modifier: Modifier = Modifier, category: Category) {
         ),
 
     ) {
-        Text(
-            text = category.name,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center
-        )
+        Column(
+            modifier = Modifier.fillMaxSize().padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = category.name,
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center
+            )
 
-        Icon(
-            painter = painterResource(id = category.icon),
-            contentDescription = "",
-            Modifier
-                .size(IconSizeMedium)
-                .align(Alignment.CenterHorizontally)
-        )
+            Icon(
+                painter = painterResource(id = category.icon),
+                contentDescription = "",
+                Modifier.size(IconSizeMedium)
+            )
+            
+            if (budgetLimit != null) {
+                Spacer(modifier = Modifier.height(4.dp))
+                val progress = (spentAmount / budgetLimit).toFloat()
+                LinearProgressIndicator(
+                    progress = { progress.coerceIn(0f, 1f) },
+                    modifier = Modifier.fillMaxWidth().height(4.dp),
+                    color = if (isOverBudget) Color.Red else if (isNearBudget) Color.Yellow else Color.Green,
+                    drawStopIndicator = {}
+                )
+                Text(
+                    text = "${spentAmount.toInt()}/${budgetLimit.toInt()}",
+                    style = MaterialTheme.typography.labelSmall
+                )
+            }
+        }
     }
 }

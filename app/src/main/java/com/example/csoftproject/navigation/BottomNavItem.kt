@@ -31,4 +31,10 @@ sealed class BottomNavItem(
         title = "Statistics",
         icon = R.drawable.trend
     )
+
+    object Savings : BottomNavItem(
+        route = "savingsGoals",
+        title = "Savings",
+        icon = R.drawable.home
+    )
 }

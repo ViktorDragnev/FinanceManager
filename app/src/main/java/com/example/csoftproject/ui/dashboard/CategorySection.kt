@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
@@ -23,14 +25,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.example.csoftproject.R
 import com.example.csoftproject.domain.utils.calculateCategoryPercentage
-import com.example.csoftproject.ui.theme.BorderSmall
-import com.example.csoftproject.ui.theme.ExtraLargePadding
-import com.example.csoftproject.ui.theme.IconSizeSmall
-import com.example.csoftproject.ui.theme.LargePadding
-import com.example.csoftproject.ui.theme.SpaceMedium
-import com.example.csoftproject.ui.theme.TextSizeTitle
+import com.example.csoftproject.domain.utils.calculateCategorySums
+import com.example.csoftproject.ui.theme.*
 import com.example.csoftproject.viewModel.DashboardViewModel
 
 @Composable
@@ -40,7 +40,8 @@ fun CategorySection(
 ) {
     val expenses by dashboardViewModel.expenses.collectAsState()
 
-    val data = calculateCategoryPercentage(expenses)
+    val percentageData = calculateCategoryPercentage(expenses)
+    val sumData = calculateCategorySums(expenses)
 
     Column(
         modifier = Modifier
@@ -58,7 +59,8 @@ fun CategorySection(
         )
         CategoriesList(
             dashboardViewModel = dashboardViewModel,
-            data = data
+            percentageData = percentageData,
+            sumData = sumData
         )
     }
 }
@@ -67,13 +69,15 @@ fun CategorySection(
 fun CategoriesList(
     dashboardViewModel: DashboardViewModel,
     modifier: Modifier = Modifier,
-    data: Map<Int, Double>
+    percentageData: Map<Int, Double>,
+    sumData: Map<Int, Double>
 ) {
-    data.forEach { (categoryId, percentage) ->
+    percentageData.forEach { (categoryId, percentage) ->
         CategoryCard(
             dashboardViewModel = dashboardViewModel,
             categoryId = categoryId,
-            percentage = percentage
+            percentage = percentage,
+            spentAmount = sumData[categoryId] ?: 0.0
         )
     }
 }
@@ -82,7 +86,8 @@ fun CategoriesList(
 fun CategoryCard(
     dashboardViewModel: DashboardViewModel,
     categoryId: Int,
-    percentage: Double
+    percentage: Double,
+    spentAmount: Double
 ) {
 
     val categories by dashboardViewModel.categories.collectAsState()
@@ -91,6 +96,10 @@ fun CategoryCard(
     val color = category?.color ?: Color.Gray.copy(alpha = 0.15f)
     val icon = category?.icon ?: R.drawable.question_sign
     val name = category?.name ?: "Unknown"
+    
+    val budgetLimit = category?.budgetLimit
+    val isOverBudget = budgetLimit != null && spentAmount > budgetLimit
+    val isNearBudget = budgetLimit != null && spentAmount > (budgetLimit * 0.8)
 
     Card(
         modifier = Modifier
@@ -98,34 +107,85 @@ fun CategoryCard(
             .padding(LargePadding)
             .border(
                 width = BorderSmall,
-                color = MaterialTheme.colorScheme.tertiary,
+                color = if (isOverBudget) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.tertiary,
                 shape = MaterialTheme.shapes.medium
             ),
         colors = CardDefaults.cardColors(
             containerColor = category?.color?.copy(alpha = 0.15f) ?: Color.Unspecified
         )
     ) {
-        Row(
-            modifier = Modifier.padding(ExtraLargePadding),
-            horizontalArrangement = Arrangement.spacedBy(SpaceMedium),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                painter = painterResource(category?.icon ?: R.drawable.question_sign),
-                contentDescription = category?.name,
-                tint = category?.color ?: Color.Unspecified,
-                modifier = Modifier.size(IconSizeSmall)
-            )
+        Column(modifier = Modifier.padding(ExtraLargePadding)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(SpaceMedium),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(icon),
+                    contentDescription = name,
+                    tint = category?.color ?: Color.Unspecified,
+                    modifier = Modifier.size(IconSizeSmall)
+                )
 
-            ProgressBar(
-                percentage = percentage,
-                color = category?.color ?: Color.Unspecified
-            )
-
-            Text(
-                text = stringResource(R.string.percentage_format, percentage),
-                style = MaterialTheme.typography.titleMedium
-            )
+                Column(modifier = Modifier.weight(1f)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(text = name, style = MaterialTheme.typography.bodyMedium)
+                        Text(
+                            text = stringResource(R.string.percentage_format, percentage),
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                    }
+                    
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        ProgressBar(
+                            percentage = percentage,
+                            color = category?.color ?: Color.Unspecified
+                        )
+                    }
+                }
+            }
+            
+            if (budgetLimit != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+                val budgetProgress = (spentAmount / budgetLimit).toFloat()
+                
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Budget: ${spentAmount.toInt()} / ${budgetLimit.toInt()}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (isOverBudget) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    
+                    if (isOverBudget) {
+                        Text(
+                            text = "Limit Exceeded!",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.error,
+                            fontWeight = FontWeight.Bold
+                        )
+                    } else if (isNearBudget) {
+                        Text(
+                            text = "Near Limit (80%)",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = Color(0xFFFFA000), // Amber
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+                
+                LinearProgressIndicator(
+                    progress = { budgetProgress.coerceIn(0f, 1f) },
+                    modifier = Modifier.fillMaxWidth().height(4.dp),
+                    color = if (isOverBudget) MaterialTheme.colorScheme.error else if (isNearBudget) Color(0xFFFFA000) else MaterialTheme.colorScheme.primary,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant
+                )
+            }
         }
     }
 }

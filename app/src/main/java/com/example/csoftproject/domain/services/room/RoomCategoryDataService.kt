@@ -1,13 +1,12 @@
 package com.example.csoftproject.domain.services.room
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import com.example.csoftproject.data.dao.CategoryDao
 import com.example.csoftproject.data.entity.CategoryEntity
 import com.example.csoftproject.domain.mappers.CategoryMapper.toDomainCategory
-import com.example.csoftproject.domain.services.CategoryDataService
 import com.example.csoftproject.domain.models.Category
 import com.example.csoftproject.domain.models.dtos.AddCategoryDto
+import com.example.csoftproject.domain.services.CategoryDataService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -53,6 +52,7 @@ class RoomCategoryDataService(private val categoryDao: CategoryDao): CategoryDat
             name = addCategoryDto.name,
             icon = addCategoryDto.icon,
             color = String.format("#%08X", addCategoryDto.color.toArgb()),
+            budgetLimit = addCategoryDto.budgetLimit,
             updateCount = 0
         )
 
@@ -71,6 +71,7 @@ class RoomCategoryDataService(private val categoryDao: CategoryDao): CategoryDat
             name = category.name,
             icon = category.icon,
             color = String.format("#%08X", category.color.toArgb()),
+            budgetLimit = category.budgetLimit,
             updateCount = existing.updateCount + 1
         )
 

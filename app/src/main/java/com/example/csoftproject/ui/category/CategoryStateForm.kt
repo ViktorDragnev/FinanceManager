@@ -5,5 +5,6 @@ import androidx.compose.ui.graphics.Color
 data class CategoryStateForm(
     val name: String,
     val icon: Int,
-    val color: Color = Color(0xFFEF5350)
+    val color: Color = Color(0xFFEF5350),
+    val budgetLimit: String = ""
 )

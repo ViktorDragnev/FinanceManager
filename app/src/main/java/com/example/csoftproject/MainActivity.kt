@@ -18,6 +18,7 @@ import com.example.csoftproject.ui.category.CategoryListScreen
 import com.example.csoftproject.ui.category.EditCategoryScreen
 import com.example.csoftproject.ui.components.TransactionDetailsScreen
 import com.example.csoftproject.ui.dashboard.DashboardScreen
+import com.example.csoftproject.ui.savings.SavingsGoalScreen
 import com.example.csoftproject.ui.statistics.StatisticsScreen
 import com.example.csoftproject.ui.theme.CSoftProjectTheme
 import com.example.csoftproject.ui.transaction.AddExpenseFormScreen
@@ -29,6 +30,7 @@ import com.example.csoftproject.viewModel.CategoryViewModel
 import com.example.csoftproject.viewModel.DashboardViewModel
 import com.example.csoftproject.viewModel.EditCategoryViewModel
 import com.example.csoftproject.viewModel.EditExpenseViewModel
+import com.example.csoftproject.viewModel.SavingsGoalViewModel
 import com.example.csoftproject.viewModel.StatisticsViewModel
 import com.example.csoftproject.viewModel.TransactionsViewModel
 import com.example.csoftproject.viewModel.factory.createAppViewModelFactory
@@ -47,6 +49,7 @@ class MainActivity : ComponentActivity() {
         val addCategoryViewModel: AddCategoryViewModel by viewModels { vmFactory }
         val editCategoryViewModel: EditCategoryViewModel by viewModels { vmFactory }
         val statisticsViewModel: StatisticsViewModel by viewModels { vmFactory }
+        val savingsGoalViewModel: SavingsGoalViewModel by viewModels { vmFactory }
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -140,6 +143,13 @@ class MainActivity : ComponentActivity() {
                             StatisticsScreen(
                                 statisticsViewModel = statisticsViewModel,
                                 modifier = Modifier
+                            )
+                        }
+
+                        composable("savingsGoals") {
+                            SavingsGoalScreen(
+                                navController = navController,
+                                viewModel = savingsGoalViewModel
                             )
                         }
                     }
